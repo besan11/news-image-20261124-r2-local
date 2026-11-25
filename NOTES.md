@@ -1,135 +1,63 @@
-# Verification and attribution log — news-image-20261124
+# NOTES — news-image-20261124 v2
 
-This log records how the picture was checked before it was submitted: which
-sources back the three lead stories, why the regional mix looks the way it
-does, why the DATE CHECK paragraph exists, and how the render was shown to
-be reproducible. It is the paper trail behind the front page.
+## What was built
+A single 1024×1024 PNG drawn by `render.py` (Pillow only) from story data
+written in the same file, plus a one-line `main.ts` that copies the shipped
+`entry.png` to the output directory. No photos, no borrowed art, no network
+at render or run time. Fonts are real `.ttf` files under `fonts/` (DejaVu).
 
-## Trio verification
+## How it works
+- `render.py` builds the page top to bottom: masthead (date + counts), a
+  one-line note to the picture editor, a stat strip, the UTC timeline and
+  numbers box, three drawn lead scenes, ten middle tiles, a region bar, a
+  schematic world map with 35 dots, the numbered list 14–35, a dated DATE
+  CHECK, and a footer with the certainty legend and sources.
+- Lead scenes are drawn with Pillow primitives: a courthouse with a gold
+  "10/12" verdict glow (Huawei), a night sea with a burning tanker and mines
+  (Hormuz), and a night skyline with the PIF tower on fire (Riyadh).
+- `main.ts` (Node 22, stdlib only) copies `entry.png` to
+  `$MAKEFUN_OUTPUT_DIR/entry.png`; run twice it writes identical bytes.
 
-The three illustrated scenes are the three stories the day is remembered
-for, and each one was confirmed against reporting dated Tuesday 24 November
-2026 before it was drawn.
+## The trio, and why
+Independent research (Daily Summary Of 24 Nov digest, 30 stories / 64 sources;
+Le Monde, CNN, Investopedia, AP via theScore, Xinhua via TBS) gives the
+consensus top 3, in order:
+1. **Huawei guilty** — first reported 20:41 UTC, the digest's lead story and
+   hero image; a US jury convicted on 10 of 12 counts after a 2-month trial.
+2. **Hormuz tanker mines** — first reported 00:00 UTC, four tankers; plus the
+   IRGC container-ship attack at 18:58 UTC. The same developing story, the
+   day's biggest escalation risk; claims labelled REPORTED (unconfirmed by JMIC).
+3. **Riyadh PIF tower hit** — 14:27 UTC, 11 wounded, second hit in under a
+   week; the top story of the day's video round-ups and a direct Houthi–Saudi
+   escalation with same-day retaliation (story 11).
+Deliberately NOT a lead: Nvidia/Huang. The reinstatement and the +31.5%
+share jump happened on **Monday 23 Nov**; Tuesday only carried follow-up.
+The v1 entry used it as a lead — v2 corrects that and puts it in the DATE
+CHECK. Same for the ICJ Myanmar ruling (Thu 19 Nov).
 
-### 1. Huawei guilty — New York jury verdict
+## Counts (self-check)
+- Stories: 35 (leads 1–3, tiles 4–13, list 14–35). Regions: N. America 7,
+  Middle East 7, Europe 6, Asia 9, Latin America 3, Africa 3 — max 9/35
+  (25.7%), no region above one third. Sport (AFCON CAS ruling, Champions
+  League, FIFA 2031 hosts) appears only in the list, never as a lead.
+- Stat strip and numbers box use only top-story figures (10/12, 4 tankers,
+  11 wounded, 25 hostages, 60 km, 16 crew). Each lead has 2 data annotations,
+  a certainty chip and a source line with a UTC time.
 
-Confirmed by CNN on 24 November 2026. A jury in Brooklyn found Huawei
-guilty on 10 of the 12 counts it faced, ending a trial that had run for more
-than two months. Sentencing was set for 14 September 2027. The verdict is
-the lead because it is the day's most consequential courtroom outcome: a
-multi-year case against one of the world's largest technology companies,
-decided in a single afternoon. The scene is labelled with its certainty chip
-and its source, so the reader knows the finding rests on a named outlet and
-a dated report, not on a rumour.
-
-### 2. Hormuz: four tankers mined
-
-The Strait of Hormuz story is the day's sharpest military escalation: four
-tankers struck mines in one of the world's busiest shipping chokepoints.
-It earned the second scene because of what it threatens — a waterway that
-carries a large share of the world's seaborne oil — rather than because of
-any single casualty count. The number four is the reported figure for the
-day; the scene does not inflate it.
-
-### 3. Riyadh: drone hits the PIF tower
-
-A drone struck the PIF tower in Riyadh, taking the region's conflict into
-the skyline of the Saudi capital. It is the third scene because it changes
-the geography of the story: the fighting is no longer confined to a distant
-front. The tower is named precisely — the Public Investment Fund tower — so
-the reader can place the strike without guessing.
-
-## The story that moved: Nvidia / Huang
-
-Jensen Huang's reinstatement at Nvidia was first reported on Monday
-23 November 2026, covered by Investopedia, Le Monde, and 9to5Mac. That
-single fact decides its treatment: a Monday story cannot stand as one of
-Tuesday's three leads. It is not hidden — it is named in the DATE CHECK
-paragraph with its correct date, where the reader can see exactly why it
-sits outside the day's front page. The trio above is therefore made only of
-stories first reported on Tuesday 24 November.
-
-## Region balance
-
-Thirty-five stories spread across six regions:
-
-| Region | Stories |
-| --- | --- |
-| Asia | 9 |
-| North America | 7 |
-| Middle East | 7 |
-| Europe | 6 |
-| Latin America | 3 |
-| Africa | 3 |
-
-The largest region, Asia, accounts for 9 of 35 stories — 25.7%, just over a
-quarter of the page. That cap matters: it keeps the picture a world picture
-instead of a regional one. The three smallest regions still appear, because
-a day in which Latin America and Africa produced real news should show them,
-even if each contributes only three stories. The region bar at the foot of
-the picture turns this table into a visual check the reader can do in a
-second.
-
-## DATE CHECK rationale
-
-The DATE CHECK paragraph exists for one reason: a single picture that claims
-to show one day must defend its date. It does two jobs, both fully dated.
-
-First, it names the prominent stories that belong to another day and were
-therefore kept off the front page — the Nvidia reinstatement of Monday
-23 November above all — so nobody can accuse the picture of quietly
-smuggling in yesterday's news.
-
-Second, it names the developments that had not happened yet when the day
-closed, so the picture cannot be read as claiming knowledge of the future.
-
-Both halves are written with dates attached to every item. A date check
-without dates would be a slogan; with them, it is a check the reader can
-verify.
-
-## Certainty chips
-
-Every illustrated scene carries a chip that states how firmly its story is
-sourced:
-
-- **CONFIRMED** — reported by two or more outlets.
-- **OFFICIAL** — stated on the record by an official source.
-- **REPORTED** — carried by a single outlet so far.
-
-The chips are explained in the footer legend. They are a promise to the
-reader: nothing on the page is presented as more certain than its sourcing
-allows.
-
-## Render determinism
-
-The image is produced by `render.py` with Pillow: every shape, line, and
-letter is drawn in code, and no external picture or network fetch is
-involved. Rendering twice gives byte-identical output — the same 1024x1024
-PNG, 203,410 bytes, sha256
-`23a3b8ce2e695e759c764aa96090160d70d4ca6c6d74a1deba0c76f2d71115e2`. That
-matters for a competition entry: anyone who clones the repository and runs
-the renderer gets exactly the picture that was submitted, with no drift
-between runs.
-
-Reproduce it with:
-
-```sh
-python3 render.py
-```
-
-## Schematic map note
-
-The world map on the page is schematic: simplified continent shapes drawn
-to show where the day's stories happened, not a survey-grade map. Borders
-are approximate and small states are not drawn to scale. It is a locator,
-not a reference atlas — its job is to let the reader see at a glance that
-the news of 24 November touched six regions, and nothing more is claimed
-for it.
-
-## Sources
-
-- CNN, 24 November 2026 — Huawei jury verdict, Brooklyn, 10 of 12 counts.
-- Investopedia, Le Monde, 9to5Mac, 23 November 2026 — Nvidia reinstatement
-  of Jensen Huang (Monday, therefore DATE CHECK only).
-- Competition page: https://make.fun/c/news-image-20261124
-- Repository: https://github.com/besan11/news-image-20261124-r2-local
+## Limitations, stated plainly
+- The world map is schematic (rough continent polygons), not a real map.
+- Scenes are symbolic drawings, not photographs; faces and fine detail are
+  deliberately avoided so nothing reads as a fake photo.
+- The Hormuz mine claims rest on Iranian statements and are labelled
+  REPORTED; the maritime centre said they were unconfirmed. The frame says
+  so in the lead itself.
+- Two digest items that looked like separate stories were the same incident
+  (South Korea / Russian jets, items 18 and 26 of the digest); they are
+  merged into one story here, and the 35th slot is the Australia tech-fine
+  story from the same day's round-ups.
+- "El Chapo Isidro" was captured over the weekend but first reported on
+  24 Nov, so it counts as a Tuesday story under the competition's own rule
+  (happened OR first reported that day); the frame does not claim the capture
+  itself happened on Tuesday.
+- Small text (10 px) is dense by design; the masthead, leads and stat strip
+  carry the frame at 300 px wide.
