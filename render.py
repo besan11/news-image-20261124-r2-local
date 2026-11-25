@@ -230,6 +230,21 @@ def num_badge(draw, cx, cy, n, r=13, fill=RED):
 
 
 # ---------------------------------------------------------------- scenes
+def glow_spot(img, base_x, base_y, size, tint, strength):
+    """Stamp a soft elliptical glow onto the canvas.
+
+    Builds a solid sheet of `tint`, cuts it to an ellipse with a greyscale
+    stencil whose peak is `strength`, then pastes it at (`base_x`, `base_y`).
+    `size` is the (width, height) of the patch. The stencil fades the sheet
+    out toward its rim, so the glow has no hard edge.
+    """
+    w, h = size
+    sheet = Image.new("RGB", size, tint)
+    stencil = Image.new("L", size, 0)
+    ImageDraw.Draw(stencil).ellipse([0, 0, w, h], fill=strength)
+    img.paste(sheet, (base_x, base_y), stencil)
+
+
 def scene_court(img, d, box):
     x0, y0, x1, y1 = box
     d.rectangle(box, fill=(13, 22, 40))
@@ -237,11 +252,8 @@ def scene_court(img, d, box):
     for r, a in ((70, 40), (50, 70), (32, 110)):
         d.ellipse([x0 + 165 - r, y0 + 62 - r, x0 + 165 + r, y0 + 62 + r],
                   fill=(201, 162, 39, a))
-    glow = Image.new("RGB", (90, 90), (201, 162, 39))
-    m = Image.new("L", (90, 90), 0)
-    ImageDraw.Draw(m).ellipse([0, 0, 90, 90], fill=70)
-    spot = (x0 + 120, y0 + 52)
-    img.paste(glow, spot, m)
+    # warm halo centred on the verdict figures
+    glow_spot(img, x0 + 120, y0 + 52, (90, 90), (201, 162, 39), 70)
     # courthouse pediment + columns
     d.polygon([(x0 + 20, y0 + 78), (x0 + 165, y0 + 30), (x0 + 310, y0 + 78)],
               fill=(36, 58, 96))
@@ -259,11 +271,8 @@ def scene_court(img, d, box):
 def scene_sea(img, d, box):
     x0, y0, x1, y1 = box
     d.rectangle(box, fill=(8, 26, 38))
-    glow = Image.new("RGB", (120, 90), (230, 110, 20))
-    m = Image.new("L", (120, 90), 0)
-    ImageDraw.Draw(m).ellipse([0, 0, 120, 90], fill=90)
-    spot = (x0 + 160, y0 + 25)
-    img.paste(glow, spot, m)
+    # ember-coloured wash behind the burning deck
+    glow_spot(img, x0 + 160, y0 + 25, (120, 90), (230, 110, 20), 90)
     # moon + sea
     d.ellipse([x0 + 24, y0 + 14, x0 + 52, y0 + 42], fill=(235, 225, 190))
     d.rectangle([x0, y0 + 118, x1, y1], fill=(10, 42, 58))
@@ -292,11 +301,8 @@ def scene_tower(img, d, box):
     # stars
     for sx, sy in ((30, 18), (70, 30), (290, 16), (250, 34), (120, 12), (200, 22)):
         d.ellipse([x0 + sx, y0 + sy, x0 + sx + 2, y0 + sy + 2], fill=(255, 255, 255))
-    glow = Image.new("RGB", (100, 100), (255, 140, 30))
-    m = Image.new("L", (100, 100), 0)
-    ImageDraw.Draw(m).ellipse([0, 0, 100, 100], fill=100)
-    spot = (x0 + 115, y0 + 10)
-    img.paste(glow, spot, m)
+    # orange bloom where the fire crowns the tower
+    glow_spot(img, x0 + 115, y0 + 10, (100, 100), (255, 140, 30), 100)
     # skyline
     for bx, bw, bh in ((8, 42, 70), (58, 34, 95), (270, 40, 80), (232, 30, 60)):
         d.rectangle([x0 + bx, y1 - bh, x0 + bx + bw, y1], fill=(12, 8, 20))
