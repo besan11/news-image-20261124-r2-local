@@ -240,7 +240,8 @@ def scene_court(img, d, box):
     glow = Image.new("RGB", (90, 90), (201, 162, 39))
     m = Image.new("L", (90, 90), 0)
     ImageDraw.Draw(m).ellipse([0, 0, 90, 90], fill=70)
-    img.paste(glow, (x0 + 120, y0 + 52), m)
+    spot = (x0 + 120, y0 + 52)
+    img.paste(glow, spot, m)
     # courthouse pediment + columns
     d.polygon([(x0 + 20, y0 + 78), (x0 + 165, y0 + 30), (x0 + 310, y0 + 78)],
               fill=(36, 58, 96))
@@ -261,7 +262,8 @@ def scene_sea(img, d, box):
     glow = Image.new("RGB", (120, 90), (230, 110, 20))
     m = Image.new("L", (120, 90), 0)
     ImageDraw.Draw(m).ellipse([0, 0, 120, 90], fill=90)
-    img.paste(glow, (x0 + 160, y0 + 25), m)
+    spot = (x0 + 160, y0 + 25)
+    img.paste(glow, spot, m)
     # moon + sea
     d.ellipse([x0 + 24, y0 + 14, x0 + 52, y0 + 42], fill=(235, 225, 190))
     d.rectangle([x0, y0 + 118, x1, y1], fill=(10, 42, 58))
@@ -293,7 +295,8 @@ def scene_tower(img, d, box):
     glow = Image.new("RGB", (100, 100), (255, 140, 30))
     m = Image.new("L", (100, 100), 0)
     ImageDraw.Draw(m).ellipse([0, 0, 100, 100], fill=100)
-    img.paste(glow, (x0 + 115, y0 + 10), m)
+    spot = (x0 + 115, y0 + 10)
+    img.paste(glow, spot, m)
     # skyline
     for bx, bw, bh in ((8, 42, 70), (58, 34, 95), (270, 40, 80), (232, 30, 60)):
         d.rectangle([x0 + bx, y1 - bh, x0 + bx + bw, y1], fill=(12, 8, 20))
